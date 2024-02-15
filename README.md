@@ -7,4 +7,4 @@ Welcome to the Port Swigger Cheatsheet for Application Security (AppSec) intervi
 The main goal of this cheatsheet is to equip aspiring security professionals with the knowledge and skills required to excel in AppSec interviews, focusing on practical, hands-on experience with Port Swigger's suite of tools.
 
 ## Contents
-- [Path Traversal](Appsec-Cheatsheet-Port-Swigger-/Path-Traversal.md)
+- [Path Traversal](Path-Traversal.md)
