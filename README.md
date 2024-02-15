@@ -8,3 +8,4 @@ The main goal of this cheatsheet is to equip aspiring security professionals wit
 
 ## Contents
 - [Path Traversal](Path-Traversal.md)
+- [Access-Control](Access-Control.md)
