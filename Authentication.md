@@ -43,11 +43,6 @@ To make authentication mechanisms robust:
 - Ensure secure session management.
 - Regularly update and patch systems.
 
-## Labs for Practice
-
-For hands-on practice, access labs focused on exploiting authentication vulnerabilities:
-- [View all authentication labs](#)
-
 ## Understanding Authentication
 
 Authentication verifies the identity of a user, distinguishing between authorized and unauthorized users. It's a foundational aspect of web security.
