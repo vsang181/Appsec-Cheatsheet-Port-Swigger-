@@ -79,5 +79,4 @@ Improperly configured permissions on files, directories, or services can lead to
 Robust access control is critical for securing web applications against unauthorized access and preventing data breaches. Understanding the potential vulnerabilities and appropriate mitigation strategies is essential for AppSec professionals to protect applications from access control-related security threats.
 
 ## Further Reading
-- OWASP Guide on Access Control
-- Secure Coding Practices for Web Applications
+- [OWASP Guide on Access Control](https://owasp.org/www-community/Access_Control)
