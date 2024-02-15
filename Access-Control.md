@@ -3,7 +3,7 @@
 ## Introduction
 Access control involves applying constraints to determine who or what is authorized to perform actions or access resources, particularly in web applications. It plays a crucial role in maintaining the security and integrity of systems by ensuring that only authenticated and authorized users can access specified resources or perform certain actions.
 
-![image](https://github.com/vsang181/Appsec-Cheatsheet-Port-Swigger-/assets/28651683/959f31f0-ddda-4af9-8060-6897d9768c4e)
+![image](https://github.com/vsang181/Appsec-Cheatsheet-Port-Swigger-/assets/28651683/80a0a249-0100-4699-b874-cf7c8fde7c6f)
 
 ## Key Components
 - **Authentication**: Verifies that the user is who they claim to be.
