@@ -48,6 +48,4 @@ https://insecure-website.com/loadImage?filename=..\..\..\windows\win.ini
 Understanding and mitigating path traversal vulnerabilities are crucial for securing web applications. This cheatsheet aims to provide AppSec interview candidates with the knowledge to identify and discuss strategies to prevent these vulnerabilities.
 
 ## Further Reading
-- OWASP Guide on Path Traversal: OWASP Path Traversal
-- Secure Coding Practices: Preventing Path Traversal in Web Applications
-
+- [OWASP Guide on Path Traversal](https://owasp.org/www-community/attacks/Path_Traversal)
