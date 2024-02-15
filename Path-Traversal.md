@@ -1,51 +1,42 @@
 # Path Traversal
 
-## Introduction
-Path Traversal, also known as directory traversal, represents a critical security vulnerability that can allow attackers to access arbitrary files on a server. This cheatsheet provides an overview, examples, and mitigation strategies to prepare for application security (AppSec) interviews.
-
 ## What is Path Traversal?
-Path traversal vulnerabilities enable attackers to read (and possibly write to) arbitrary files on the server running an application. This can lead to unauthorized access to sensitive data or even full control over the server.
 
-### Potential Risks
-- **Exposure of Application Code and Data**: Access to application source code can reveal backend logic, secrets, and other sensitive information.
-- **Access to Backend System Credentials**: Credentials stored on the server can be compromised, leading to unauthorized access to databases and other systems.
-- **Leakage of Sensitive OS Files**: Files like `/etc/passwd` on Unix systems or `C:\Windows\win.ini` on Windows can reveal user information and system configurations.
+Path traversal, also known as directory traversal, is a web security vulnerability that allows an attacker to read (and sometimes write to) arbitrary files on the server running an application. This can include sensitive files such as application code and data, credentials for back-end systems, and operating system files, potentially leading to full control over the server.
 
-## Exploiting Path Traversal
-Consider a web application that loads images for items on sale using a query parameter to specify the image file. Without proper validation, an attacker can manipulate the `filename` parameter to access arbitrary files on the server.
+![image](https://github.com/vsang181/Appsec-Cheatsheet-Port-Swigger-/assets/28651683/0cb819a5-33c4-47f8-895b-d5711fcc4612)
 
-### Example Vulnerability
-An application uses the following HTML to display images:
+### Reading Arbitrary Files via Path Traversal
 
-```
-html
-<img src="/loadImage?filename=218.png">
-```
-It constructs the file path by appending the filename parameter to a base directory, such as /var/www/images/. Without safeguards, an attacker could manipulate the path to access system files:
-url
+Consider a shopping application that loads item images with a URL like: `<img src="/loadImage?filename=218.png">`. This URL takes a `filename` parameter and returns the contents of the specified file, typically stored in a directory such as `/var/www/images/`.
 
-```
-https://insecure-website.com/loadImage?filename=../../../etc/passwd
-```
+Without defenses against path traversal, attackers can manipulate the `filename` parameter to access files outside the intended directory. For example, requesting `https://insecure-website.com/loadImage?filename=../../../etc/passwd` would attempt to access the `/etc/passwd` file, which contains user details on Unix-based systems.
 
-This URL attempts to traverse up the directory structure to access /etc/passwd, a critical system file on Unix-based systems.
+Windows servers are also vulnerable, with directory traversal sequences like `..\` being valid. An example attack URL on a Windows server might look like `https://insecure-website.com/loadImage?filename=..\..\..\windows\win.ini`.
 
-## Windows Path Traversal
+## Common Obstacles and Bypass Techniques
 
-On Windows, traversal sequences include ../ and ..\. An attacker could use these to target system files like win.ini:
+Applications often implement defenses against path traversal, such as blocking or stripping directory traversal sequences from input. However, several techniques can bypass these defenses:
 
-```
-https://insecure-website.com/loadImage?filename=..\..\..\windows\win.ini
-```
-## Mitigation Strategies
-- **Validating Input**: Ensure that the file paths or names supplied in user input match expected patterns.
-- **Using Allow Lists**: Only allow access to a predefined list of safe files or directories.
-- **Implementing Secure File Access**: Utilize secure APIs that automatically mitigate directory traversal vulnerabilities.
-- **Applying the Principle of Least Privilege**: Restrict the application's permissions to access only the files and directories necessary for its operation.
+- **Using Absolute Paths:** Specifying an absolute file path directly, e.g., `filename=/etc/passwd`.
+- **Nested Traversal Sequences:** Employing sequences like `....//` or `....\/` which revert to simple traversal sequences when the inner sequence is stripped.
+- **URL Encoding:** Encoding traversal sequences, e.g., `%2e%2e%2f` for `../`, to bypass web server sanitization.
+- **Required Base Folder in Input:** Including the expected base directory in the user input followed by traversal sequences.
+- **Expected File Extension Bypass:** Using null bytes to terminate the file path before an expected file extension, e.g., `filename=../../../etc/passwd%00.png`.
 
+## Prevention of Path Traversal Attacks
 
-## Conclusion
-Understanding and mitigating path traversal vulnerabilities are crucial for securing web applications. This cheatsheet aims to provide AppSec interview candidates with the knowledge to identify and discuss strategies to prevent these vulnerabilities.
+The most effective prevention strategy is to avoid passing user-supplied input to filesystem APIs. If unavoidable, two layers of defense are recommended:
 
-## Further Reading
-- [OWASP Guide on Path Traversal](https://owasp.org/www-community/attacks/Path_Traversal)
+1. **Validate User Input:** Use whitelisting or ensure the input contains only permitted content.
+2. **Canonicalize the Path:** Append user input to the base directory and use filesystem APIs to canonicalize the path, verifying it starts with the expected base directory.
+
+### Example Defense in Java
+
+```java
+File file = new File(BASE_DIRECTORY, userInput);
+if (file.getCanonicalPath().startsWith(BASE_DIRECTORY)) {
+    // process file
+}
+
+This Java code example demonstrates validating the canonical path of a file based on user input to prevent path traversal.
